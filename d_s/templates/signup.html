@@ -1,0 +1,124 @@
+{% extends 'homepage.html' %}
+{% block content %}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Sign Up</title>
+
+	<link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/cover/">
+
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+
+    <!-- Font Awesome JS -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+    <style type="text/css">
+	@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
+
+body{
+  background: #fff;
+  font-family: 'PT Sans', sans-serif;
+}
+h2{
+  padding-top: 1.5rem;
+}
+a{
+  color: #333;
+}
+a:hover{
+  color: #da5767;
+  text-decoration: none;
+}
+.card{
+  border: 0.40rem solid #f8f9fa;
+  top: 10%;
+}
+.form-control{
+  background-color: #f8f9fa;
+  padding: 20px;
+  padding: 25px 15px;
+  margin-bottom: 1.3rem;
+}
+
+.form-control:focus {
+
+    color: #000000;
+    background-color: #ffffff;
+    border: 3px solid #da5767;
+    outline: 0;
+    box-shadow: none;
+
+}
+
+.btn{
+  padding: 0.6rem 1.2rem;
+  background: #da5767;
+  border: 2px solid #da5767;
+}
+.btn-primary:hover {
+
+    
+    background-color: #df8c96;
+    border-color: #df8c96;
+  transition: .3s;
+
+}
+</style>
+</head>
+
+
+<body>
+	<div class="container">
+		  <div class="row justify-content-center">
+		  <div class="col-md-5">
+		   <div class="card">
+		     <h2 class="card-title text-center">Register Yourself</h2>
+		     {% if msg %}
+		     	<b style="color:blue">{{msg}}</b>
+		     {% endif %}
+		      <div class="card-body py-md-4">
+
+		      <form _lpchecked="1" action="{% url 'signup'%}" method="POST">
+		      	{%  csrf_token %}
+
+		          	<div class="form-group">
+		             	<input type="text" class="form-control" name="fname" placeholder="First Name">
+		        	</div>
+
+		        	<div class="form-group">
+		             	<input type="text" class="form-control" name="lname" placeholder="Last Name">
+		        	</div>
+
+		        	<div class="form-group">
+		             	<input type="email" class="form-control" name="email" placeholder="Email">
+		        	</div>
+
+		        	<div class="form-group">
+		        		<input type="mobile" class="form-control" name="mobile" placeholder="90909*****">
+		        	</div>
+
+				   	<div class="form-group">
+				     	<input type="password" class="form-control" name="password" placeholder="Password">
+				  	</div>
+
+				   	<div class="form-group">
+				      	<input type="password" class="form-control" name="cpassword" placeholder="confirm-password">
+				   	</div>
+                        <button class="btn btn-primary" name="action" value="Signup" >Create Account</button>
+          			</div>
+       			</form>
+     		</div>
+  		</div>
+	</div>
+</div>
+	</div>
+</body>
+</html>
+
+{% endblock %}

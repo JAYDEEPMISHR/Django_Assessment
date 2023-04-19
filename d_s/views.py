@@ -4,7 +4,7 @@ from .models import User
 # Create your views here.
 
 def index(request):
-	return render(request,'homepage.html')
+	return render(request,'index.html')
 
 def signup(request):
 	if request.method=="POST":
@@ -32,13 +32,14 @@ def signup(request):
 def login(request):
 	if request.method=="POST":
 		try:
-			user=User.objects.get(request.POST['email'])
+			user=User.objects.get(email=request.POST['email'])
 			if user.password==request.POST['password']:
 				request.session['email']=user.email
 				request.session['fname']=user.fname
+
 				return render(request,'homepage.html')
 			else:
-				msg:"Invalid Password"
+				msg="Invalid password"
 				return render(request,'login.html',{'msg':msg})
 		except:
 			msg="Email not registered"

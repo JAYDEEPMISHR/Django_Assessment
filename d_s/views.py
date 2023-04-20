@@ -4,7 +4,7 @@ from .models import User
 # Create your views here.
 
 def index(request):
-	return render(request,'index.html')
+	return render(request,'home.html')
 
 def signup(request):
 	if request.method=="POST":
@@ -37,7 +37,7 @@ def login(request):
 				request.session['email']=user.email
 				request.session['fname']=user.fname
 
-				return render(request,'homepage.html')
+				return render(request,'home.html')
 			else:
 				msg="Invalid password"
 				return render(request,'login.html',{'msg':msg})
@@ -46,3 +46,25 @@ def login(request):
 			return render(request,'login.html',{'msg':msg})
 	else:
 		return render(request,'login.html')		
+
+def logout(request):
+	try:
+		del request.session['email']
+		del request.session['fname']
+		return render(request,'login.html')
+	except:
+		return render(request,'login.html')
+
+def profile(request):
+	user=User.objects.get(email=request.session['email'])
+	if request.method=="POST":
+		user.fname=request.POST['fname']
+		user.lname=request.POST['lname']
+		user.email=request.POST['email']
+		user.mobile=request.POST['mobile']
+		user.save()
+		msg="Profile Updated Successfully"
+		request.session['email']=user.email
+		return render(request,'update.html',{'user':user,'msg':msg})
+	else:
+		return render(request,'update.html',{'user':user})

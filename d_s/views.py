@@ -1,5 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from .models import User
+from django.conf import settings
+from django.core.mail import send_mail
+import random
 
 # Create your views here.
 
@@ -36,6 +39,7 @@ def login(request):
 			if user.password==request.POST['password']:
 				request.session['email']=user.email
 				request.session['fname']=user.fname
+				# requst.session['profile_pic']=user.profile_pic.url
 
 				return render(request,'home.html')
 			else:
@@ -51,20 +55,74 @@ def logout(request):
 	try:
 		del request.session['email']
 		del request.session['fname']
+		# del request.session['profile_pic']
 		return render(request,'login.html')
 	except:
 		return render(request,'login.html')
 
 def profile(request):
-	user=User.objects.get(email=request.session['email'])
+	try:
+		user=User.objects.get(email=request.session['email'])
+		if request.method=="POST":
+			user.fname=request.POST['fname']
+			user.lname=request.POST['lname']
+			user.email=request.POST['email']
+			user.mobile=request.POST['mobile']
+			# try:
+			# 	user.profile_pic=request.FILES['profile_pic']
+			# except:
+			# 	pass
+			user.save()
+			msg="Profile Updated Successfully"
+			request.session['email']=user.email
+			return render(request,'update.html',{'user':user,'msg':msg})
+		else:
+			return render(request,'update.html',{'user':user})
+	except:
+		msg="Please Login To see your profile"
+		return render(request,'login.html',{'msg':msg})
+
+def forgot_password(request):
 	if request.method=="POST":
-		user.fname=request.POST['fname']
-		user.lname=request.POST['lname']
-		user.email=request.POST['email']
-		user.mobile=request.POST['mobile']
-		user.save()
-		msg="Profile Updated Successfully"
-		request.session['email']=user.email
-		return render(request,'update.html',{'user':user,'msg':msg})
+		try:
+			user=User.objects.get(email=request.POST['email'])
+			otp=random.randint(1000,9999)
+			subject = 'OTP for Forgot Password'
+			message = 'Hello ' + user.fname + ', Your OTP for forgot password is: '+str(otp)
+			email_from = settings.EMAIL_HOST_USER
+			recipient_list = [user.email,]
+			send_mail( subject, message, email_from, recipient_list)
+			return render(request,'otp.html',{'email':user.email,'otp':otp})
+
+		except:
+			msg="Email not registered"
+			return render(request,'forgot-password.html',{'msg':msg})
 	else:
-		return render(request,'update.html',{'user':user})
+		return render(request,'forgot-password.html')
+
+def verify_otp(request):
+	email=request.POST['email']
+	otp=request.POST['otp']
+	uotp=request.POST['uotp']
+
+	if otp==uotp:
+		return render(request,'new-password.html',{'email':email})
+
+	else:
+		msg:"Please Enter Valid OTP"
+		return render(request,'otp.html',{'email':email,'msg':msg})
+
+def new_password(request):
+	email=request.POST['email']
+	np=request.POST['npassword']
+	cnp=request.POST['cnpassword']
+
+	if np==cnp:
+		user=User.objects.get(email=email)
+		user.password=np
+		user.save()
+		msg="Your Password has been changed successfully"
+		return render(request,'login.html',{'msg':msg})
+	else:
+		msg="New Password and Confirm new password does not matched"
+		return render(request,'new-password.html') 

@@ -283,6 +283,10 @@ a.article:hover {
                                 <li class="nav-item">
                                     <a class="nav-link" href="{% url 'logout' %}">Logout({{request.session.fname}})</a>
                                 </li>
+
+                                <!-- <li class="nav-item">
+                                    <a href="{% url 'profile' %}"> <img src="{{request.session.profile_pic}}"></a>
+                                </li> -->
                             </ul>
                         {% else %}
                             <ul class="nav navbar-nav ml-auto">

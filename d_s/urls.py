@@ -15,4 +15,5 @@ urlpatterns = [
     path('chairmanhome/',views.chairmanhome,name='chairmanhome'),
     path('edit-notice/',views.edit_notice,name='edit-notice'),
     path('add-event/',views.add_event,name='add-event'),
+    path('event-view/',views.event_view,name='event-view'),
 ]

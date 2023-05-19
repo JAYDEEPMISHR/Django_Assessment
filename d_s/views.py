@@ -194,4 +194,9 @@ def add_event(request):
 		notice=Notice.objects.all()
 		return render(request,'add-event.html',{'event':event,'notice':notice})
 
-
+def event_view(request):
+	if request.method=="GET":
+		event=Events.objects.all()
+		return render(request,'event-view.html',{'event':event})
+	else:
+		return render(request,'chairmanhomepage.html')

@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from .models import User
+from .models import *
 from django.conf import settings
 from django.core.mail import send_mail
 import random
@@ -7,7 +7,7 @@ import random
 # Create your views here.
 
 def index(request):
-	return render(request,'home.html')
+	return render(request,'login.html')
 
 def signup(request):
 	if request.method=="POST":
@@ -23,6 +23,7 @@ def signup(request):
 					email=request.POST['email'],
 					mobile=request.POST['mobile'],
 					password=request.POST['password'],
+					usertype=request.POST['usertype'],
 					)
 				msg="User SignUp Successfully"
 				return render(request,'signup.html',{'msg':msg})
@@ -36,12 +37,28 @@ def login(request):
 	if request.method=="POST":
 		try:
 			user=User.objects.get(email=request.POST['email'])
-			if user.password==request.POST['password']:
-				request.session['email']=user.email
-				request.session['fname']=user.fname
-				# requst.session['profile_pic']=user.profile_pic.url
+			if user.usertype=="society-member":
+				if user.password==request.POST['password']:
+					request.session['email']=user.email
+					request.session['fname']=user.fname
+					# requst.session['profile_pic']=user.profile_pic.url
 
-				return render(request,'home.html')
+					return render(request,'home.html')
+				else:
+					msg="Invalid password"
+					return render(request,'login.html',{'msg':msg})
+
+			elif user.usertype=="Chairman":
+				if user.password==request.POST['password']:
+					request.session['email']=user.email
+					request.session['fname']=user.fname
+					# requst.session['profile_pic']=user.profile_pic.url
+					notice=Notice.objects.all()
+					return render(request,'chairmanhomepage.html',{'notice':notice})
+				else:
+					msg="Invalid password"
+					return render(request,'login.html',{'msg':msg})
+
 			else:
 				msg="Invalid password"
 				return render(request,'login.html',{'msg':msg})
@@ -126,3 +143,55 @@ def new_password(request):
 	else:
 		msg="New Password and Confirm new password does not matched"
 		return render(request,'new-password.html') 
+
+def notice(request):
+	if request.method=="POST":
+		Notice.objects.create(
+			date=request.POST['date'],
+			event=request.POST['notice'],
+			)
+		notice=Notice.objects.all()
+		event=Events.objects.all()
+		return render(request,'chairmanhomepage.html',{'notice':notice,'event':event})
+	else:
+		return render(request,'notice.html')
+
+def notice_view(request):
+	if request.method=="GET":
+		notice=Notice.objects.all()
+		return render(request,'notice-view.html',{'notice':notice})
+	else:
+		return render(request,'chairmanhomepage.html')
+
+def chairmanhome(request):
+	if request.method=="GET":
+		notice=Notice.objects.all()
+		event=Events.objects.all()
+		return render(request,'chairmanhomepage.html',{'notice':notice,'event':event})
+
+def edit_notice(request):
+	notice=Notice.objects.all()
+	if request.method=="POST":
+		notice.date=request.POST['date']
+		notice.event=request.POST['notice']
+		notice.save()
+		return redirect('chairmanhome')
+	else:
+		notice=Notice.objects.all()
+		return render(request,'notice-edit.html')
+
+def add_event(request):
+	if request.method=="POST":
+		Events.objects.create(
+			date=request.POST['date'],
+			event=request.POST['event'],
+			)
+		event=Events.objects.all()
+		notice=Notice.objects.all()
+		return render(request,'chairmanhomepage.html',{'event':event,'notice':notice})
+	else:
+		event=Events.objects.all()
+		notice=Notice.objects.all()
+		return render(request,'add-event.html',{'event':event,'notice':notice})
+
+

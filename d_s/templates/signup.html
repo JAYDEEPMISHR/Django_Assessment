@@ -25,6 +25,15 @@
     {% endif %}
 
     <div class="form-group">
+      <label for="fname">Sign Up as:</label>
+      <select name="usertype">
+        <option name="society-member">Society-Member</option>
+        <option name="chairman">Chairman</option>
+        <option name="watchman">Watchman</option>
+      </select>
+    </div>
+
+    <div class="form-group">
 		  <label for="fname">Firstname:</label>
 		  <input type="text" class="form-control" name="fname" placeholder="Enter Name" required>
 	  </div>

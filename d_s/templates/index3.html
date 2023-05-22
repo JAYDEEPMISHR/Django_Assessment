@@ -230,10 +230,16 @@ a.article:hover {
                     <a href="{% url 'member-profile' %}">Dashboard</a>
                     <a href="{% url 'profile' %}">My Profile</a>
                     <a href="{% url 'member-list' %}">Society Members</a>
-                    <a href="{% url 'watchman-details' %}" >Society Watchmen</a>  
-                </li>
-                <li>
-                    <a href="#">Society Maintainance</a>
+                    <a href="{% url 'watchman-details' %}" >Society Watchmen</a> 
+                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">Society Maintainance</a>
+                        <ul class="collapse list-unstyled" id="pageSubmenu">
+                            <li>
+                                <a href="{% url 'pay-maintainance' %}">Pay Your maintainance</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'see-all-transaction' %}">See All transactions</a>
+                            </li>
+                        </ul> 
                 </li>
             </ul>
 
@@ -262,10 +268,6 @@ a.article:hover {
                                 <li class="nav-item">
                                     <a class="nav-link" href="{% url 'logout' %}">Logout({{request.session.fname}})</a>
                                 </li>
-
-                                <!-- <li class="nav-item">
-                                    <a href="{% url 'profile' %}"> <img src="{{request.session.profile_pic}}"></a>
-                                </li> -->
                             </ul>
                         {% else %}
                             <ul class="nav navbar-nav ml-auto">

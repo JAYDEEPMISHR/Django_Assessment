@@ -43,5 +43,8 @@ urlpatterns = [
     path('member-profile/',views.member_profile,name='member-profile'),
     path('watchman-details/',views.watchman_details,name='watchman-details'),
     #path('maintainance/',views.maintainance,name='maintainance'),
+    path('pay-maintainance/',views.pay_maintainance,name='pay-maintainance'),
+    path('see-all-transaction/',views.see_all_transaction,name='see-all-transaction'),
+    path('paymentpage/',views.paymentpage,name='paymentpage'),
 
 ]

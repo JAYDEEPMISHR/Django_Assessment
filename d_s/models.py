@@ -50,5 +50,11 @@ class Chairman(models.Model):
 	maintainance=models.PositiveIntegerField()
 
 class Transaction(models.Model):
+	date=models.DateTimeField()
 	amount=models.ForeignKey(Chairman,on_delete=models.CASCADE)
-	house=models.ForeignKey(User,on_delete=models.CASCADE)
+	user=models.ForeignKey(User,on_delete=models.CASCADE)
+	payment_status=models.BooleanField(default=False)
+
+
+	def __str__(self):
+		return self.house

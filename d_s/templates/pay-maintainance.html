@@ -1,0 +1,42 @@
+{% extends 'index3.html' %}
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+</head>
+<body style="display: inline-block; margin-top: 150px; margin-left: 350px;">
+
+	<div class="container" style="width: 50%;">
+          <form action="{% url 'pay-maintainance' %}" class="was-validated" method="post">
+             {% csrf_token %}
+              <h1 style="text-align: center;">Pay Your Maintainance</h1>
+
+            
+            <div class="form-group">
+              <label for="uname">Amount:</label>
+              <input type="text" class="form-control" name="amount" name="amount">
+            </div>
+            
+
+            <div class="form-group">
+              <label for="uname">Username:</label>
+              <input type="text" class="form-control" name="house" placeholder="Enter Your house number" name="house" required>
+            </div>
+
+            <div class="form-group">
+              <label for="pwd">Date & time:</label>
+              <input type="datetime-local" class="form-control" name="date" required>
+            </div>
+
+            <a href="{% url 'paymentpage' %}" type="submit" class="btn btn-primary"> Submit</a>
+            <a href="{% url 'see-all-transaction' %}" type="button" class="btn btn-success">View All Transaction</a>
+	
+</table>
+</body>
+</html>
+
+{% endblock %}

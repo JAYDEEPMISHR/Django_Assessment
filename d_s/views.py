@@ -388,5 +388,28 @@ def watchman_details(request):
 		user=User.objects.filter(usertype="Watchman")
 		return render(request,'member-list.html',{'user':user})
 
-#def maintainance(request):
+def pay_maintainance(request):
+	if request.method=="POST":
+		user=User.objects.get(email=request.POST['email'])
+		Transaction.objects.create(
+				amount=request.POST['amount'],
+				user=request.POST['house'],
+				date=request.POST['date'],
+				payment_status=False,
+			)
+		return render(request,'paymentpage.html',{'user':user})
+	else:
+		return render(request,'pay-maintainance.html')
 
+def paymentpage(request):
+	user=User.objects.get(email=request.POST['email'])
+	transaction=Transaction.objects.filter(user=user,payment_status=False)
+	
+
+def see_all_transaction(request):
+	if request.method=="POST":
+		user=User.objects.get(email=request.POST['email'])
+		transaction=Transaction.objects.all()
+		return render(request,'all-transaction.html',{'user':user,'transaction':transaction})
+	else:
+		return render(request,'all-transaction.html')

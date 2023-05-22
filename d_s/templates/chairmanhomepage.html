@@ -26,8 +26,8 @@
 	  	<tr>
 	      <td>{{i.date}}</td>
 	      <td>{{i.event}}</td>
-	      <td><button class="btn btn-primary"><a href="{% url 'edit-notice' %}">Edit</a></button></td>
-	      <td><button class="btn btn-danger"><a href="#">Delete</a></button></td>
+	      <td><button class="btn btn-primary"><a href="{% url 'edit-notice' pk=i.pk %}">Edit</a></button></td>
+	      <td><button class="btn btn-danger"><a href="{% url 'delete-notice' pk=i.pk %}">Delete</a></button></td>
 	    </tr> 
 	  </tbody>
 	  {% endfor %}
@@ -51,7 +51,7 @@
 			      <td>{{i.date}}</td>
 			      <td>{{i.event}}</td>
 			      <td><button class="btn btn-primary"><a href="#">Edit</a></button></td>
-			      <td><button class="btn btn-danger"><a href="#">Delete</a></button></td>
+			      <td><button class="btn btn-danger"><a href="{% url 'delete' pk=i.pk %}">Delete</a></button></td>
 			    </tr> 
 		  		</tbody>
 	 	{% endfor %}

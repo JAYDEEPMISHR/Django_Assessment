@@ -1,0 +1,51 @@
+{% extends 'chairmanindex.html' %}
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+</head>
+<body>
+	<table class="table">
+	  <thead>
+	    <tr>
+	      <th scope="col">Date</th>
+	      <th scope="col">Name</th>
+	      <th scope="col">House number</th>
+	      <th scope="col">Complain</th>
+	      <th scope="col">Status</th>
+
+	    </tr>
+	  </thead>
+	  {% for i in complain %}
+	  <tbody>
+	  	<tr>
+	      <td>{{i.date}}</td>
+	      <td>{{i.name}}</td>
+	      <td>{{i.house}}</td>
+	      <td>{{i.complain}}</td>
+	    
+		{% if i.status == "pending" %}
+		<td>
+			<form name="task" method="post" action="{% url 'complete-task' %}">
+				{% csrf_token %}
+				<input type="hidden" name="id" value="{{i.id}}">
+				<input type="submit" name="action" value="Pending" class="btn btn-danger">
+			</form>
+		</td>
+		{% else %}
+		<td>
+			<input type="submit" name="action" value="Resolved" readonly class="btn btn-success">
+		</td>
+		{% endif %}
+	    </tr> 
+	  </tbody>
+	 {% endfor %}
+</table>
+</body>
+</html>
+
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'watchmanindex.html' %}
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+</head>
+<body>
+    
+<!-- Table for Visitor -->
+      
+      <table class="table">
+        <h3>Visitor's list</h3>
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col">Name</th>
+              <th scope="col">Mobile</th>
+              <th scope="col">House</th>
+              <th scope="col">Vehical No</th>
+              <th scope="col">Purpose</th>
+
+            </tr>
+          </thead>
+
+          {% for i in visitor %}
+              <tbody>
+                <tr>
+                  <td>{{i.date}}</td>
+                  <td>{{i.name}}</td>
+                  <td>{{i.mobile}}</td>
+                  <td>{{i.house}}</td>
+                  <td>{{i.vehical}}</td>
+                  <td>{{i.purpose}}</td>
+
+                </tr> 
+                </tbody>
+         {% endfor %}
+</body>
+</html>
+{% endblock %}

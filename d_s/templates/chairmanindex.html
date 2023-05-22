@@ -228,27 +228,27 @@ a.article:hover {
             <ul class="list-unstyled components">
                 <li>
                     <a href="{% url 'chairmanhome' %}">Dashboard</a>
-                    <a href="{% url 'profile' %}">My Profile</a>
-                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">Society Members</a>
-                    <ul class="collapse list-unstyled" id="pageSubmenu">
-                        <li>
-                            <a href="{% url 'login' %}">Login</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'signup' %}">SignUp</a>
-                        </li>
-                    </ul>
-                        <li>
-                            <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">Society Watchmen</a>
-                            <ul class="collapse list-unstyled" id="pageSubmenu">
-                                <li>
-                                    <a href="{% url 'login' %}">Login</a>
-                                </li>
-                                <li>
-                                    <a href="{% url 'signup' %}">SignUp</a>
-                                </li>
-                            </ul>
-                        </li>
+                    <a href="{% url 'chairmanprofile' %}">My Profile</a>
+                    <a href="{% url 'society-members' %}">Society Members</a>
+                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">Complains/Suggestions</a>
+                        <ul class="collapse list-unstyled" id="pageSubmenu">
+                            <li>
+                                <a href="{% url 'chairmanseecomplain' %}">See all Complains</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'chairmancomplain' %}">Raise a complain</a>
+                            </li>
+                        </ul> 
+                    <a href="#pageSubmenu1" data-toggle="collapse" aria-expanded="false">Transactions</a>
+                        <ul class="collapse list-unstyled" id="pageSubmenu1">
+                            <li>
+                                <a href="#">See all Transaction</a>
+                            </li>
+                            <li>
+                                <a href="#">Maintainance</a>
+                            </li>
+                        </ul> 
+                    <a href="{% url 'maintainance-amount' %}">Maintainance amount</a>  
                 </li>
                 <li>
                     <a href="{% url 'notice-view' %}">Notice</a>
@@ -292,10 +292,6 @@ a.article:hover {
                                 <li class="nav-item active">
                                     <a class="nav-link" href="{% url 'logout' %}">Logout({{request.session.fname}})</a>
                                 </li>
-                                
-                                <!-- <li class="nav-item">
-                                    <a href="{% url 'profile' %}"> <img src="{{request.session.profile_pic}}"></a>
-                                </li> -->
                             </ul>
                         {% else %}
                             <ul class="nav navbar-nav ml-auto">

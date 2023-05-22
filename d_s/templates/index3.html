@@ -222,39 +222,18 @@ a.article:hover {
             </div>
 
             <div class="sidebar-header">
-                <h3> <a href="/">Digi_Society</a> </h3>
+                <h3> <a href="{% url 'member-profile' %}">Digi_Society</a> </h3>
             </div>
 
             <ul class="list-unstyled components">
                 <li>
-                    <a href="/">Dashboard</a>
+                    <a href="{% url 'member-profile' %}">Dashboard</a>
                     <a href="{% url 'profile' %}">My Profile</a>
-                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">Society Members</a>
-                    <ul class="collapse list-unstyled" id="pageSubmenu">
-                        <li>
-                            <a href="{% url 'login' %}">Login</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'signup' %}">SignUp</a>
-                        </li>
-                    </ul>
-                        <li>
-                            <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">Society Watchmen</a>
-                            <ul class="collapse list-unstyled" id="pageSubmenu">
-                                <li>
-                                    <a href="{% url 'login' %}">Login</a>
-                                </li>
-                                <li>
-                                    <a href="{% url 'signup' %}">SignUp</a>
-                                </li>
-                            </ul>
-                        </li>
+                    <a href="{% url 'member-list' %}">Society Members</a>
+                    <a href="{% url 'watchman-details' %}" >Society Watchmen</a>  
                 </li>
                 <li>
-                    <a href="#">Notice</a>
-                </li>
-                <li>
-                    <a href="#">Events</a>
+                    <a href="#">Society Maintainance</a>
                 </li>
             </ul>
 

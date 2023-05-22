@@ -1,8 +1,9 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,HttpResponse
 from .models import *
 from django.conf import settings
 from django.core.mail import send_mail
 import random
+from .pdf import html2pdf 
 
 # Create your views here.
 
@@ -18,6 +19,7 @@ def signup(request):
 		except:
 			if request.POST['password']==request.POST['cpassword']:
 				User.objects.create(
+					house=request.POST['house'],
 					fname=request.POST['fname'],
 					lname=request.POST['lname'],
 					email=request.POST['email'],
@@ -41,9 +43,9 @@ def login(request):
 				if user.password==request.POST['password']:
 					request.session['email']=user.email
 					request.session['fname']=user.fname
-					# requst.session['profile_pic']=user.profile_pic.url
-
-					return render(request,'home.html')
+					event=Events.objects.all()
+					notice=Notice.objects.all()
+					return render(request,'member-profile.html',{'event':event,'notice':notice})
 				else:
 					msg="Invalid password"
 					return render(request,'login.html',{'msg':msg})
@@ -52,9 +54,21 @@ def login(request):
 				if user.password==request.POST['password']:
 					request.session['email']=user.email
 					request.session['fname']=user.fname
-					# requst.session['profile_pic']=user.profile_pic.url
 					notice=Notice.objects.all()
-					return render(request,'chairmanhomepage.html',{'notice':notice})
+					event=Events.objects.all()
+					return render(request,'chairmanhomepage.html',{'notice':notice,'event':event})
+				else:
+					msg="Invalid password"
+					return render(request,'login.html',{'msg':msg})
+
+			elif user.usertype=="Watchman":
+				if user.password==request.POST['password']:
+					request.session['email']=user.email
+					request.session['fname']=user.fname
+					# requst.session['profile_pic']=user.profile_pic.url
+					event=Events.objects.all()
+					visitor=Visitor.objects.all()
+					return render(request,'watchmanhomepage.html',{'event':event,'visitor':visitor})
 				else:
 					msg="Invalid password"
 					return render(request,'login.html',{'msg':msg})
@@ -72,7 +86,6 @@ def logout(request):
 	try:
 		del request.session['email']
 		del request.session['fname']
-		# del request.session['profile_pic']
 		return render(request,'login.html')
 	except:
 		return render(request,'login.html')
@@ -85,10 +98,6 @@ def profile(request):
 			user.lname=request.POST['lname']
 			user.email=request.POST['email']
 			user.mobile=request.POST['mobile']
-			# try:
-			# 	user.profile_pic=request.FILES['profile_pic']
-			# except:
-			# 	pass
 			user.save()
 			msg="Profile Updated Successfully"
 			request.session['email']=user.email
@@ -144,6 +153,31 @@ def new_password(request):
 		msg="New Password and Confirm new password does not matched"
 		return render(request,'new-password.html') 
 
+# Chairman Working
+
+def chairmanprofile(request):
+	try:
+		user=User.objects.get(email=request.session['email'])
+		if request.method=="POST":
+			user.fname=request.POST['fname']
+			user.lname=request.POST['lname']
+			user.email=request.POST['email']
+			user.mobile=request.POST['mobile']
+			user.save()
+			msg="Profile Updated Successfully"
+			request.session['email']=user.email
+			return render(request,'updatechairmanprofile.html',{'user':user,'msg':msg})
+		else:
+			return render(request,'updatechairmanprofile.html',{'user':user})
+	except:
+		msg="Please Login To see your profile"
+		return render(request,'login.html',{'msg':msg})
+def chairmanhome(request):
+	if request.method=="GET":
+		notice=Notice.objects.all()
+		event=Events.objects.all()
+		return render(request,'chairmanhomepage.html',{'notice':notice,'event':event})
+
 def notice(request):
 	if request.method=="POST":
 		Notice.objects.create(
@@ -163,14 +197,8 @@ def notice_view(request):
 	else:
 		return render(request,'chairmanhomepage.html')
 
-def chairmanhome(request):
-	if request.method=="GET":
-		notice=Notice.objects.all()
-		event=Events.objects.all()
-		return render(request,'chairmanhomepage.html',{'notice':notice,'event':event})
-
-def edit_notice(request):
-	notice=Notice.objects.all()
+def edit_notice(request,pk):
+	notice=Notice.objects.get(pk=pk)
 	if request.method=="POST":
 		notice.date=request.POST['date']
 		notice.event=request.POST['notice']
@@ -200,3 +228,165 @@ def event_view(request):
 		return render(request,'event-view.html',{'event':event})
 	else:
 		return render(request,'chairmanhomepage.html')
+
+def delete(request,pk):
+	event=Events.objects.get(pk=pk)
+	event.delete()
+	return redirect('chairmanhome')
+
+def delete_notice(request,pk):
+	notice=Notice.objects.get(pk=pk)
+	notice.delete()
+	return redirect('chairmanhome')
+
+def chairmancomplain(request):
+	if request.method=="POST":
+		Watchman.objects.create(
+			name=request.POST['name'],
+			house=request.POST['house'],
+			mobile=request.POST['mobile'],
+			complain=request.POST['complain'],
+			date=request.POST['date'],
+			status=request.POST['status'],
+			)
+		complain=Watchman.objects.all()
+		return render(request,'chairmancomplainpage.html',{'complain':complain})
+	else:
+		complain=Watchman.objects.all()
+		return render(request,'chairmancomplainpage.html',{'complain':complain})
+
+def chairmanseecomplain(request):
+	if request.method=="GET":
+		complain=Watchman.objects.all()
+		return render(request,'chairmanseecomplainpage.html',{'complain':complain})
+
+def society_members(request):
+	if request.method=="GET":
+		user=User.objects.all()
+		return render(request,'society-member-list.html',{'user':user})
+
+def pdf(request):
+	pdf= html2pdf('society-member-list.html')
+	return HttpResponse(pdf,content_type="application/pdf")
+
+def maintainance_amount(request):
+	if request.method=="POST":
+		Chairman.objects.create(maintainance=request.POST['amount'],)
+		return render(request,'maintainance.html')
+	else:
+		return render(request,'maintainance.html')
+
+# def edit_amount(request):
+# 	if request.method=="POST":
+# 		amount=Chairman.objects.get('maintainance')
+# 		amount.amount=request.POST['amount']
+# 		return render(request,'change-maintainance.html')
+# 	else:
+# 		return render(request,'change-maintainance.html')
+
+# Watchman Working
+
+
+def watchmanprofile(request):
+	try:
+		user=User.objects.get(email=request.session['email'])
+		if request.method=="POST":
+			user.fname=request.POST['fname']
+			user.lname=request.POST['lname']
+			user.email=request.POST['email']
+			user.mobile=request.POST['mobile']
+			user.save()
+			msg="Profile Updated Successfully"
+			request.session['email']=user.email
+			return render(request,'updatewatchmanprofile.html',{'user':user,'msg':msg})
+		else:
+			return render(request,'updatewatchmanprofile.html',{'user':user})
+	except:
+		msg="Please Login To see your profile"
+		return render(request,'login.html',{'msg':msg})
+
+def visitor(request):
+	if request.method=="POST":
+		Visitor.objects.create(
+			name=request.POST['name'],
+			house=request.POST['house'],
+			mobile=request.POST['mobile'],
+			purpose=request.POST['purpose'],
+			date=request.POST['date'],
+			vehical=request.POST['vehical'],
+			)
+		event=Events.objects.all()
+		visitor=Visitor.objects.all()
+		return render(request,'watchmanhomepage.html',{'visitor':visitor,'event':event})
+	else:
+		return render(request,'visitor-registration.html')
+
+def notice_view_watchman(request):
+	if request.method=="GET":
+		notice=Notice.objects.all()
+		return render(request,'notice-view-watchman.html',{'notice':notice})
+	else:
+		visitor=Visitor.objects.all()
+		return render(request,'watchmanhomepage.html',{'visitor':visitor})
+
+def watchmanhome(request):
+	if request.method=="GET":
+		visitor=Visitor.objects.all()
+		return render(request,'watchmanhomepage.html',{'visitor':visitor})
+
+def event_view_watchman(request):
+	if request.method=="GET":
+		event=Events.objects.all()
+		return render(request,'event-view-watchman.html',{'event':event})
+	else:
+		visitor=Visitor.objects.all()
+		return render(request,'watchmanhomepage.html',{'visitor':visitor})
+
+def complain(request):
+	if request.method=="POST":
+		Watchman.objects.create(
+			name=request.POST['name'],
+			house=request.POST['house'],
+			mobile=request.POST['mobile'],
+			complain=request.POST['complain'],
+			date=request.POST['date'],
+			status=request.POST['status'],
+			)
+		complain=Watchman.objects.all()
+		return render(request,'complainpage.html',{'complain':complain})
+	else:
+		complain=Watchman.objects.all()
+		return render(request,'complainpage.html',{'complain':complain})
+
+def view_complain_watchman(request):
+	if request.method=="GET":
+		complain=Watchman.objects.all()
+		return render(request,'watchmanseecomplainpage.html',{'complain':complain})
+
+def complete_task(request):
+	id=int(request.POST['id'])
+	task=Watchman.objects.get(pk=id)
+	task.status="completed"
+	task.save()
+	return redirect('watchmanhome')
+
+# Society members
+
+def member_list(request):
+	if request.method=="GET":
+		user=User.objects.filter(usertype="society-member")
+		return render(request,'member-list.html',{'user':user})
+
+def member_profile(request):
+	if request.method=="GET":
+		event=Events.objects.all()
+		notice=Notice.objects.all()
+		return render(request,'member-profile.html',{'event':event,'notice':notice})
+
+def watchman_details(request):
+	if request.method=="GET":
+		user=User.objects.filter(usertype="Watchman")
+		return render(request,'member-list.html',{'user':user})
+
+#def maintainance(request):
+

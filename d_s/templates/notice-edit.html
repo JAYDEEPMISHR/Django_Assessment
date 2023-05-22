@@ -17,7 +17,8 @@
   <body style="width: 50%; display: inline-block; margin-top: 150px; margin-left: 350px;">
 
         <div class="container" style="width: 50%;">
-          <form action="{% url 'edit-notice' %}" class="was-validated" method="post">
+          
+          <form action="{% url 'edit-notice' pk=i.pk %}" class="was-validated" method="post">
             {% csrf_token %}
 
             <div class="form-group">
@@ -35,6 +36,7 @@
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
           </form>
+          
         </div>
 
   </body>

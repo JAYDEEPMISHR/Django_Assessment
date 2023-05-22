@@ -1,0 +1,31 @@
+{% extends 'watchmanindex.html' %}
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+</head>
+<body>
+	<table class="table">
+	  <thead>
+	    <tr>
+	      <th scope="col">Date</th>
+	      <th scope="col">Event</th>
+	    </tr>
+	  </thead>
+	  {% for i in event %}
+	  <tbody>
+	  	<tr>
+	      <td>{{i.date}}</td>
+	      <td>{{i.event}}</td>
+	    </tr> 
+	  </tbody>
+	 {% endfor %}
+</table>
+</body>
+</html>
+
+{% endblock %}

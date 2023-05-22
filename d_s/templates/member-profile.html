@@ -1,0 +1,50 @@
+{% extends 'index3.html' %}
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+</head>
+<body>
+	<table class="table">
+	<h3>Notice Table</h3>
+	  <thead>
+	    <tr>
+	      <th scope="col">Date</th>
+	      <th scope="col">Notice</th>
+	    </tr>
+	  </thead>
+	  {% for i in notice %}
+	  <tbody>
+	  	<tr>
+	      <td>{{i.date}}</td>
+	      <td>{{i.event}}</td>
+	    </tr> 
+	  </tbody>
+	 {% endfor %}
+</table>
+
+<table class="table">
+	<h3>Event Table</h3>
+	  <thead>
+	    <tr>
+	      <th scope="col">Date</th>
+	      <th scope="col">Event</th>
+	    </tr>
+	  </thead>
+	  {% for i in event %}
+	  <tbody>
+	  	<tr>
+	      <td>{{i.date}}</td>
+	      <td>{{i.event}}</td>
+	    </tr> 
+	  </tbody>
+	 {% endfor %}
+</table>
+</body>
+</html>
+
+{% endblock %}

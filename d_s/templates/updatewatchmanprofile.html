@@ -1,0 +1,55 @@
+{% extends 'watchmanindex.html' %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title></title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"> -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+  </style>
+</head>
+<body>
+
+<div class="container" style="width: 50%;">
+  <form action="{% url 'profile' %}" class="was-validated" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+	<div class="form-group">
+    <h1 style="text-align:center;">Update Profile </h1>
+    {% if msg %}
+      <b style="color:blue">{{msg}}</b>
+    {% endif %}
+
+    <div class="form-group">
+		  <label for="fname">Firstname:</label>
+		  <input type="text" class="form-control" name="fname"  value="{{user.fname}}"  placeholder="Enter Name" required>
+	  </div>
+
+    <div class="form-group">
+      <label for="lname">Lastname:</label>
+      <input type="text" class="form-control" name="lname" value="{{user.lname}}" placeholder="Enter Surname"  required>
+    </div>
+
+	  <div class="form-group">
+		  <label for="email">Username:</label>
+		  <input type="email" class="form-control" name="email" value="{{user.email}}" placeholder="Enter Email" required>
+	  </div>
+
+	  <div class="form-group">
+	    <label for="mobile">Mobile Number:</label>
+	    <input type="number" class="form-control" name="mobile" value="{{user.mobile}}" placeholder="Enter Mobile Number" required>
+	  </div> 
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+  </form>
+</div>
+
+</body>
+</html>
+
+{% endblock %}

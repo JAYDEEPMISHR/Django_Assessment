@@ -234,10 +234,19 @@ a.article:hover {
                     <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">Society Maintainance</a>
                         <ul class="collapse list-unstyled" id="pageSubmenu">
                             <li>
-                                <a href="{% url 'pay-maintainance' %}">Pay Your maintainance</a>
+                                <a href="#">Pay Your maintainance</a>
                             </li>
                             <li>
-                                <a href="{% url 'see-all-transaction' %}">See All transactions</a>
+                                <a href="#">See All transactions</a>
+                            </li>
+                        </ul>  
+                    <a href="#pageSubmenu1" data-toggle="collapse" aria-expanded="false">Complain/Suggestion</a>
+                        <ul class="collapse list-unstyled" id="pageSubmenu1">
+                            <li>
+                                <a href="{% url 'raise-complain' %}">Raise a complain/Suggestion</a>
+                            </li>
+                            <li>
+                                <a href="#">See Your complain status</a>
                             </li>
                         </ul> 
                 </li>

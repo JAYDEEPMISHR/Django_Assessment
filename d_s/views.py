@@ -353,15 +353,19 @@ def complain(request):
 			status=request.POST['status'],
 			)
 		complain=Watchman.objects.all()
-		return render(request,'complainpage.html',{'complain':complain})
+		membercomplain=Watchman.objects.all()
+		return render(request,'complainpage.html',{'complain':complain,'membercomplain':membercomplain})
 	else:
 		complain=Watchman.objects.all()
-		return render(request,'complainpage.html',{'complain':complain})
+		membercomplain=Watchman.objects.all()
+		return render(request,'complainpage.html',{'complain':complain,'membercomplain':membercomplain})
 
 def view_complain_watchman(request):
 	if request.method=="GET":
 		complain=Watchman.objects.all()
-		return render(request,'watchmanseecomplainpage.html',{'complain':complain})
+		membercomplain=Watchman.objects.all()
+		return render(request,'watchmanseecomplainpage.html',{'complain':complain,'membercomplain':membercomplain})
+
 
 def complete_task(request):
 	id=int(request.POST['id'])
@@ -388,28 +392,18 @@ def watchman_details(request):
 		user=User.objects.filter(usertype="Watchman")
 		return render(request,'member-list.html',{'user':user})
 
-def pay_maintainance(request):
+def raise_complain(request):
 	if request.method=="POST":
-		user=User.objects.get(email=request.POST['email'])
-		Transaction.objects.create(
-				amount=request.POST['amount'],
-				user=request.POST['house'],
-				date=request.POST['date'],
-				payment_status=False,
+		Watchman.objects.create(
+			name=request.POST['name'],
+			house=request.POST['house'],
+			mobile=request.POST['mobile'],
+			complain=request.POST['complain'],
+			date=request.POST['date'],
+			status=request.POST['status'],
 			)
-		return render(request,'paymentpage.html',{'user':user})
+		membercomplain=Watchman.objects.all()
+		return render(request,'member-complainpage.html',{'membercomplain':membercomplain})
 	else:
-		return render(request,'pay-maintainance.html')
-
-def paymentpage(request):
-	user=User.objects.get(email=request.POST['email'])
-	transaction=Transaction.objects.filter(user=user,payment_status=False)
-	
-
-def see_all_transaction(request):
-	if request.method=="POST":
-		user=User.objects.get(email=request.POST['email'])
-		transaction=Transaction.objects.all()
-		return render(request,'all-transaction.html',{'user':user,'transaction':transaction})
-	else:
-		return render(request,'all-transaction.html')
+		complain=Watchman.objects.all()
+		return render(request,'member-complainpage.html',{'complain':complain})

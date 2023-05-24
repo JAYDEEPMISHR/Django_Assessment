@@ -16,7 +16,7 @@
 <body>
 
 <div class="container" style="width: 50%;">
-  <form action="{% url 'complain' %}" class="was-validated" method="post">
+  <form action="{% url 'membercomplain' pk=Watchman.pk %}" class="was-validated" method="post">
     {% csrf_token %}
 	<div class="form-group">
     <h1 style="text-align:center;">Complain Raise/ Suggestion </h1>

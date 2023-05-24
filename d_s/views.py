@@ -409,3 +409,8 @@ def raise_complain(request):
 	else:
 		complain=Watchman.objects.all()
 		return render(request,'member-complainpage.html',{'complain':complain})
+
+def membercomplain(request,pk):
+	if request.method=="POST":
+		user=User.objects.get(email=request.session['email'])
+		membercomplain=Watchman.objects.get(pk=pk)

@@ -362,6 +362,7 @@ def complain(request):
 
 def view_complain_watchman(request):
 	if request.method=="GET":
+		user=User.objects.get(email=request.session['email'])
 		complain=Watchman.objects.all()
 		membercomplain=Watchman.objects.all()
 		return render(request,'watchmanseecomplainpage.html',{'complain':complain,'membercomplain':membercomplain})
@@ -394,6 +395,7 @@ def watchman_details(request):
 
 def raise_complain(request):
 	if request.method=="POST":
+		user=User.objects.get(email=request.session['email'])
 		Watchman.objects.create(
 			name=request.POST['name'],
 			house=request.POST['house'],

@@ -413,5 +413,5 @@ def raise_complain(request):
 def membercomplain(request,pk):
 	if request.method=="POST":
 		user=User.objects.get(email=request.session['email'])
-		membercomplain=Watchman.objects.get(pk=pk)
+		membercomplain=Watchman.objects.all()
 		return render(request,'see-complain.html',{'membercomplain':membercomplain})

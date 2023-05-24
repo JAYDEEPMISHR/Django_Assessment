@@ -43,5 +43,5 @@ urlpatterns = [
     path('member-profile/',views.member_profile,name='member-profile'),
     path('watchman-details/',views.watchman_details,name='watchman-details'),
     path('raise-complain/',views.raise_complain,name='raise-complain'),
-    path('membercomplain/<int:pk>',views.membercomplain,name='membercomplain'),
+    path('membercomplain/',views.membercomplain,name='membercomplain'),
 ]

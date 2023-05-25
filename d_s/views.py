@@ -410,7 +410,7 @@ def raise_complain(request):
 		complain=Watchman.objects.all()
 		return render(request,'member-complainpage.html',{'complain':complain})
 
-def membercomplain(request,pk):
+def membercomplain(request):
 	if request.method=="POST":
 		user=User.objects.get(email=request.session['email'])
 		membercomplain=Watchman.objects.all()

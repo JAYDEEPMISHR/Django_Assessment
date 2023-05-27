@@ -37,7 +37,7 @@ class Visitor(models.Model):
 
 class Watchman(models.Model):
 	name=models.CharField(max_length=100)
-	house=models.CharField(max_length=50)
+	house=models.ForeignKey(User,on_delete=models.CASCADE)
 	mobile=models.PositiveIntegerField()
 	complain=models.TextField()
 	date=models.DateTimeField()
